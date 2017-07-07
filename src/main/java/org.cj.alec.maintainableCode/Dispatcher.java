@@ -29,7 +29,7 @@ class Dispatcher implements Handler {
                 command = badRequest;
                 result = command.apply("only one target permitted");
             }
-        }else{ 
+        }else{
             result = command.apply("query not found");
         }
         return result;
