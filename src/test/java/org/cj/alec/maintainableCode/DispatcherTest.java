@@ -77,4 +77,32 @@ public class DispatcherTest {
         //then
         assertThat(actual, equalTo(expected));
     }
+
+    @Test
+    public void emptyTargetBadRequest(){
+        // given
+        final Handler dispatcher = new Dispatcher();
+        final RequestValue request = new RequestValue("GET", "/hello", "target");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target needed");
+
+        //when
+        final ResponseValue actual = dispatcher.handle(request);
+
+        //then
+        assertThat(actual, equalTo(expected));
+    }
+
+    @Test
+    public void emptyTargetBadRequest2(){
+        // given
+        final Handler dispatcher = new Dispatcher();
+        final RequestValue request = new RequestValue("GET", "/hello", "target=");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target needed");
+
+        //when
+        final ResponseValue actual = dispatcher.handle(request);
+
+        //then
+        assertThat(actual, equalTo(expected));
+    }
 }

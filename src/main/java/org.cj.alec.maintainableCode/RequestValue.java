@@ -43,6 +43,7 @@ public class RequestValue{
         List<String> matches = new ArrayList<>();
         for( String pair : pairs){
             String [] keys = pair.split("=");
+            if(keys.length < 2) return Optional.empty();
             String key = keys[0];
             if(name.equals(key)){
                 String value = keys[1];
