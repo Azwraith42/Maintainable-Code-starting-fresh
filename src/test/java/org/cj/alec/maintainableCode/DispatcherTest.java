@@ -55,7 +55,21 @@ public class DispatcherTest {
         // given
         final Handler dispatcher = new Dispatcher();
         final RequestValue request = new RequestValue("GET", "/hello", "target=world&target=Alec");
-        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, only one target permitted");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target needed");
+
+        //when
+        final ResponseValue actual = dispatcher.handle(request);
+
+        //then
+        assertThat(actual, equalTo(expected));
+    }
+
+    @Test
+    public void emptyQueryIsABadRequest(){
+        // given
+        final Handler dispatcher = new Dispatcher();
+        final RequestValue request = new RequestValue("GET", "/hello", null);
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, query not found");
 
         //when
         final ResponseValue actual = dispatcher.handle(request);

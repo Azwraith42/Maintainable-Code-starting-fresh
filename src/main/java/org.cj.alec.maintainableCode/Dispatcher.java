@@ -21,15 +21,16 @@ class Dispatcher implements Handler {
 
         Function<String, ResponseValue> command = commandMap.getOrDefault(request.path, badRequest);
         final ResponseValue result;
-        if(command != badRequest){
+        if(command != badRequest && request.query != null){
             Optional<String> target = request.singleQueryParameter("target");
             if(target.isPresent()){
                 result = command.apply(target.get());
             }else{
                 command = badRequest;
-                result = command.apply("only one target permitted");
+                result = command.apply("exactly one target needed");
             }
         }else{
+            command = badRequest;
             result = command.apply("query not found");
         }
         return result;
