@@ -41,7 +41,7 @@ public class DispatcherTest {
         // given
         final Handler dispatcher = new Dispatcher();
         final RequestValue request = new RequestValue("GET", "/xxx", "");
-        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, query not found");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_NOT_FOUND, "Not found: URI not found");
 
         //when
         final ResponseValue actual = dispatcher.handle(request);
@@ -55,7 +55,7 @@ public class DispatcherTest {
         // given
         final Handler dispatcher = new Dispatcher();
         final RequestValue request = new RequestValue("GET", "/hello", "target=world&target=Alec");
-        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target needed");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target param expected");
 
         //when
         final ResponseValue actual = dispatcher.handle(request);
@@ -69,7 +69,7 @@ public class DispatcherTest {
         // given
         final Handler dispatcher = new Dispatcher();
         final RequestValue request = new RequestValue("GET", "/hello", null);
-        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, query not found");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target param expected");
 
         //when
         final ResponseValue actual = dispatcher.handle(request);
@@ -83,7 +83,7 @@ public class DispatcherTest {
         // given
         final Handler dispatcher = new Dispatcher();
         final RequestValue request = new RequestValue("GET", "/hello", "target");
-        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target needed");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target param expected");
 
         //when
         final ResponseValue actual = dispatcher.handle(request);
@@ -97,7 +97,7 @@ public class DispatcherTest {
         // given
         final Handler dispatcher = new Dispatcher();
         final RequestValue request = new RequestValue("GET", "/hello", "target=");
-        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target needed");
+        final ResponseValue expected = new ResponseValue(HttpServletResponse.SC_BAD_REQUEST, "Bad Request, exactly one target param expected");
 
         //when
         final ResponseValue actual = dispatcher.handle(request);

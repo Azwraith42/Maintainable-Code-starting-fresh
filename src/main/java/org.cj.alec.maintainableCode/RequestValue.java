@@ -38,7 +38,9 @@ public class RequestValue{
     @Override
     public int hashCode() { return Objects.hash(method, path, query); }
 
+
     Optional<String> singleQueryParameter(String name){
+        if (query == null) return Optional.empty();
         String[] pairs = query.split("&");
         List<String> matches = new ArrayList<>();
         for( String pair : pairs){

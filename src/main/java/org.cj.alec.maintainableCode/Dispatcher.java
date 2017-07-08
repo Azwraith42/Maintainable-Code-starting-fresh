@@ -1,13 +1,14 @@
 package org.cj.alec.maintainableCode;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.ws.Response;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.Optional;
 
 class Dispatcher implements Handler {
-    private Map<String, Function<String, ResponseValue>> commandMap;
+    private Map<String, Function<Optional<String>, ResponseValue>> commandMap;
 
     Dispatcher(){
         commandMap = new HashMap<>();
@@ -15,41 +16,39 @@ class Dispatcher implements Handler {
         commandMap.put("/length", this::displayLength);
     }
 
+    private Optional<Function<Optional<String>, ResponseValue>> lookupRouteHandler(String path) {
+        return Optional.ofNullable(commandMap.get(path));
+    }
+
     @Override
     public ResponseValue handle(RequestValue request){
-        final Function<String, ResponseValue> badRequest = this::badRequest;
-
-        Function<String, ResponseValue> command = commandMap.getOrDefault(request.path, badRequest);
-        final ResponseValue result;
-        if(command != badRequest && request.query != null){
-            Optional<String> target = request.singleQueryParameter("target");
-            if(target.isPresent()){
-                result = command.apply(target.get());
-            }else{
-                command = badRequest;
-                result = command.apply("exactly one target needed");
-            }
-        }else{
-            command = badRequest;
-            result = command.apply("query not found");
-        }
-        return result;
+        return lookupRouteHandler(request.path)
+            .map(f -> f.apply(request.singleQueryParameter("target")))
+            .orElse(notFound("URI not found"));
     }
 
 
 
-    private ResponseValue displayLength(String target) {
-        ResponseValue response = ResponseValue.plainText(HttpServletResponse.SC_OK, String.format("length: %d", target.length()));
-        return response;
+    private ResponseValue displayLength(Optional<String> maybeTarget) {
+        return maybeTarget
+                .map(target -> ResponseValue.plainText(HttpServletResponse.SC_OK, String.format("length: %d", target.length())))
+                .orElse(badRequest("exactly one target param expected"));
     }
 
-    private ResponseValue sayHello(String target) {
-        ResponseValue response = ResponseValue.plainText(HttpServletResponse.SC_OK, String.format("Hello, %s!", target));
-        return response;
+    private ResponseValue sayHello(Optional<String> maybeTarget) {
+        return maybeTarget
+                .map(target -> ResponseValue.plainText(HttpServletResponse.SC_OK, String.format("Hello, %s!", target)))
+                .orElse(badRequest("exactly one target param expected"));
     }
 
-    private ResponseValue badRequest(String target){
-        ResponseValue response = ResponseValue.plainText(HttpServletResponse.SC_BAD_REQUEST, String.format("Bad Request, %s", target));
+    private ResponseValue badRequest(String errorMessage){
+        return ResponseValue.plainText(HttpServletResponse.SC_BAD_REQUEST, String.format("Bad Request, %s", errorMessage));
+    }
+
+    private ResponseValue notFound(String what){
+        ResponseValue response = ResponseValue.plainText(HttpServletResponse.SC_NOT_FOUND, String.format("Not found: %s", what));
         return response;
     }
 }
+
+
