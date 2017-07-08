@@ -26,9 +26,7 @@ class Dispatcher implements Handler {
             .map(f -> f.apply(request.singleQueryParameter("target")))
             .orElse(notFound("URI not found"));
     }
-
-
-
+    
     private ResponseValue displayLength(Optional<String> maybeTarget) {
         return maybeTarget
                 .map(target -> ResponseValue.plainText(HttpServletResponse.SC_OK, String.format("length: %d", target.length())))
@@ -41,12 +39,12 @@ class Dispatcher implements Handler {
                 .orElse(badRequest("exactly one target param expected"));
     }
 
-    private ResponseValue badRequest(String errorMessage){
-        return ResponseValue.plainText(HttpServletResponse.SC_BAD_REQUEST, String.format("Bad Request, %s", errorMessage));
+    private ResponseValue badRequest(String e){
+        return ResponseValue.plainText(HttpServletResponse.SC_BAD_REQUEST, String.format("Bad Request, %s", e));
     }
 
-    private ResponseValue notFound(String what){
-        ResponseValue response = ResponseValue.plainText(HttpServletResponse.SC_NOT_FOUND, String.format("Not found: %s", what));
+    private ResponseValue notFound(String e){
+        ResponseValue response = ResponseValue.plainText(HttpServletResponse.SC_NOT_FOUND, String.format("Not found: %s", e));
         return response;
     }
 }
