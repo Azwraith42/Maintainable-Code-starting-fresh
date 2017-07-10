@@ -26,7 +26,7 @@ class Dispatcher implements Handler {
             .map(f -> f.apply(request.singleQueryParameter("target")))
             .orElse(notFound("URI not found"));
     }
-    
+
     private ResponseValue displayLength(Optional<String> maybeTarget) {
         return maybeTarget
                 .map(target -> ResponseValue.plainText(HttpServletResponse.SC_OK, String.format("length: %d", target.length())))
