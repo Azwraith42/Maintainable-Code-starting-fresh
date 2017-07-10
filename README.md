@@ -1,5 +1,5 @@
 # Maintainable Code Exercise in Java
-Based on [Sean Shubin's Maintainable Code](https://github.com/SeanShubin/hello-web) exercise.
+Java web archive project based on [Sean Shubin's Maintainable Code](https://github.com/SeanShubin/hello-web) exercise.
 
 ###To run
 - mvn package
