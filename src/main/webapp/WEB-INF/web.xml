@@ -1,7 +1,7 @@
 <web-app>
     <servlet>
         <servlet-name>entry-point</servlet-name>
-        <servlet-class>org.cj.alec.maintainableCode.EntryPointServlet</servlet-class>
+        <servlet-class>org.cj.alec.freshMaintainable.EntryPointServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>entry-point</servlet-name>

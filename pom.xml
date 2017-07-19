@@ -1,8 +1,8 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.cj.alec.maintainableCode</groupId>
-    <artifactId>alec-maintainable-code</artifactId>
+    <groupId>org.cj.alec.freshMaintainable</groupId>
+    <artifactId>alec-fresh-maintainable</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 
