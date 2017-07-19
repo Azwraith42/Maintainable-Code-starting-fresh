@@ -19,7 +19,7 @@ public class HandlerTest {
     public void sayHello(){
         //given
         Handler handler = new Handler();
-        HttpServletRequest request = null;
+        HttpServletRequest request = new HttpServletRequestStub("=world");;
         HttpServletResponseStub response = new HttpServletResponseStub();
 
         //when
@@ -27,6 +27,20 @@ public class HandlerTest {
 
         //then
         assertThat(response.textThatWasWritten(), is("Hello, world!"));
+    }
+
+    @Test
+    public void sayHelloAlec(){
+        //given
+        Handler handler = new Handler();
+        HttpServletRequestStub request = new HttpServletRequestStub("=Alec");
+        HttpServletResponseStub response = new HttpServletResponseStub();
+
+        //when
+        handler.handle(request, response);
+
+        //then
+        assertThat(response.textThatWasWritten(), is("Hello, Alec!"));
     }
 
     class HttpServletResponseStub extends HttpServletResponseNotImplemented {
@@ -55,6 +69,19 @@ public class HandlerTest {
             Charset charset = StandardCharsets.UTF_8;
             String text = new String(bytes, charset);
             return text;
+        }
+    }
+
+    class HttpServletRequestStub extends HttpServletRequestNotImplemented {
+        final String queryString;
+
+        public HttpServletRequestStub(String queryString) {
+            this.queryString = queryString;
+        }
+
+        @Override
+        public String getQueryString() {
+            return queryString;
         }
     }
 }
