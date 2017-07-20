@@ -3,10 +3,10 @@ package org.cj.alec.freshMaintainable;
 import javax.servlet.ServletOutputStream;
 import java.io.IOException;
 
-public class UncheckedServletOutputStream {
-    final ServletOutputStream delegateToMe;
+class UncheckedServletOutputStream {
+    private final ServletOutputStream delegateToMe;
 
-    public UncheckedServletOutputStream(ServletOutputStream delegateToMe) {
+    UncheckedServletOutputStream(ServletOutputStream delegateToMe) {
         this.delegateToMe = delegateToMe;
     }
     void print(String s)  {

@@ -3,10 +3,10 @@ package org.cj.alec.freshMaintainable;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UncheckedHttpServletResponse {
-    final HttpServletResponse delegateToMe;
+class UncheckedHttpServletResponse {
+    private final HttpServletResponse delegateToMe;
 
-    public UncheckedHttpServletResponse(HttpServletResponse delegateToMe) {
+    UncheckedHttpServletResponse(HttpServletResponse delegateToMe) {
         this.delegateToMe = delegateToMe;
     }
 

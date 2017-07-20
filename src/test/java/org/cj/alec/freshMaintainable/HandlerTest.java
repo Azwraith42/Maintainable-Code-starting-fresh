@@ -56,6 +56,20 @@ public class HandlerTest {
         assertThat(response.textThatWasWritten(), is("Length: 5"));
     }
 
+    @Test
+    public void otherPathsGiveNotFound(){
+        //given
+        Handler handler = new Handler();
+        HttpServletRequestStub request = new HttpServletRequestStub("target=world", "/foo");
+        HttpServletResponseStub response = new HttpServletResponseStub();
+
+        //when
+        handler.handle(request, response);
+
+        //then
+        assertThat(response.textThatWasWritten(), is("404 not found"));
+    }
+
     class HttpServletResponseStub extends HttpServletResponseNotImplemented {
         ServletOutputStreamStub servletOutputStreamStub = new ServletOutputStreamStub();
 
