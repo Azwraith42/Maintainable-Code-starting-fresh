@@ -8,9 +8,20 @@ public class Handler {
         UncheckedHttpServletResponse uncheckedResponse = new UncheckedHttpServletResponse(resp);
 
         String target = getTargetFromRequest(req);
+        String path = getPathFromRequest(req);
 
-        uncheckedResponse.getOutputStream().print(String.format("Hello, %s!", target));
+        if(path.equals("/length")){
+            uncheckedResponse.getOutputStream().print(String.format("Length: %d", target.length()));
+        }else{
+            uncheckedResponse.getOutputStream().print(String.format("Hello, %s!", target));
+        }
     }
+
+    private String getPathFromRequest(HttpServletRequest req) {
+        String path = req.getRequestURI();
+        return path;
+    }
+
 
     private String getTargetFromRequest(HttpServletRequest req) {
 
@@ -20,8 +31,6 @@ public class Handler {
     }
 
     private String getTargetFromQuery(String queryString) {
-        String[] queryParts = queryString.split("=");
-        String target = queryParts[1];
-        return target;
+        return QueryParser.lookupFirstInstance("target", queryString);
     }
 }
