@@ -7,9 +7,14 @@ public class Handler {
     void handle(HttpServletRequest req, HttpServletResponse resp){
         UncheckedHttpServletResponse uncheckedResponse = new UncheckedHttpServletResponse(resp);
 
-        String target = getTargetFromRequest(req);
         String path = getPathFromRequest(req);
+        String target = getTargetFromRequest(req);
 
+
+        makeUncheckedResponse(uncheckedResponse, target, path);
+    }
+
+    private void makeUncheckedResponse(UncheckedHttpServletResponse uncheckedResponse, String target, String path) {
         if(path.equals("/length")){
             uncheckedResponse.getOutputStream().print(String.format("Length: %d", target.length()));
         }else{
@@ -24,9 +29,7 @@ public class Handler {
 
 
     private String getTargetFromRequest(HttpServletRequest req) {
-
         String target = getTargetFromQuery(req.getQueryString());
-
         return target;
     }
 
