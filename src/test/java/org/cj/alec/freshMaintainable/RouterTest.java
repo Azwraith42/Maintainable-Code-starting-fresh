@@ -45,13 +45,13 @@ public class RouterTest {
         String actual = router.getResponseString(target, path);
 
         //then
-        assertThat(actual, is("404 not found"));
+        assertThat(actual, is("unknown route 'bad path'"));
     }
 
     class TestHello implements Route{
         final String formattedString;
 
-        public TestHello(String formattedString) {
+        TestHello(String formattedString) {
             this.formattedString = formattedString;
         }
 

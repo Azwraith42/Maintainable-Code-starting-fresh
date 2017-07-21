@@ -17,9 +17,9 @@ public class HandlerTest {
     @Test
     public void someQueryAndSomePathMakeAResponse(){
         //given
-        RouterStub routerStub = new RouterStub();
+        GenericRouterStub routerStub = new GenericRouterStub();
         String path = "some path";
-        String query = "target=someQuery";
+        String query = "someQuery";
         HttpServletRequestStub requestStub = new HttpServletRequestStub(path, query);
         HttpServletResponseStub responseStub = new HttpServletResponseStub();
         Handler handler = new Handler(routerStub);
@@ -79,10 +79,10 @@ public class HandlerTest {
         }
     }
 
-    class RouterStub implements Router {
+    class GenericRouterStub implements Router {
         @Override
-        public String getResponseString(String target, String path) {
-            return String.format("%s, %s!",path, target);
+        public String getResponseString(String query, String path) {
+            return String.format("%s, %s!", path, query);
         }
     }
 

@@ -12,28 +12,29 @@ class Handler {
 
     void handle(HttpServletRequest req, HttpServletResponse resp){
         UncheckedHttpServletResponse uncheckedResponse = new UncheckedHttpServletResponse(resp);
-        String path = getPathFromRequest(req);
-        String target = getTargetFromRequest(req);
-        String responseString = router.getResponseString(target, path);
+//        String path = getPathFromRequest(req);
+//        String target = getTargetFromRequest(req);
+        String responseString = router.getResponseString(req.getQueryString(), req.getRequestURI());
         setUncheckedResponse(uncheckedResponse, responseString);
     }
+
 
     private void setUncheckedResponse(UncheckedHttpServletResponse uncheckedResponse, String responseString) {
         uncheckedResponse.getOutputStream().print(responseString);
     }
 
-    private String getPathFromRequest(HttpServletRequest req) {
-        String path = req.getRequestURI();
-        return path;
-    }
-
-
-    private String getTargetFromRequest(HttpServletRequest req) {
-        String target = getTargetFromQuery(req.getQueryString());
-        return target;
-    }
-
-    private String getTargetFromQuery(String queryString) {
-        return QueryParser.lookupFirstInstance("target", queryString);
-    }
+//    private String getPathFromRequest(HttpServletRequest req) {
+//        String path = req.getRequestURI();
+//        return path;
+//    }
+//
+//
+//    private String getTargetFromRequest(HttpServletRequest req) {
+//        String target = getTargetFromQuery(req.getQueryString());
+//        return target;
+//    }
+//
+//    private String getTargetFromQuery(String queryString) {
+//        return QueryParser.lookupFirstInstance("target", queryString);
+//    }
 }

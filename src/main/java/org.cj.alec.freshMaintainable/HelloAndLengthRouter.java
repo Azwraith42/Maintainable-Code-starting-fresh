@@ -1,23 +1,20 @@
 package org.cj.alec.freshMaintainable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class HelloAndLengthRouter implements Router {
-    final private Route helloRoute;
-    final private Route lengthRoute;
+    final private GenericRouter genericRouter;
 
     HelloAndLengthRouter(Route helloRoute, Route lengthRoute) {
-        this.helloRoute = helloRoute;
-        this.lengthRoute = lengthRoute;
+        Map<String, Route> routeMap = new HashMap<>();
+        routeMap.put("/hello", helloRoute);
+        routeMap.put("/length", lengthRoute);
+        genericRouter = new GenericRouter(routeMap);
     }
 
     @Override
-    public String getResponseString(String target, String path) {
-        switch (path) {
-            case "/hello":
-                return helloRoute.getFormattedString(target);
-            case "/length":
-                return lengthRoute.getFormattedString(target);
-            default:
-                return "404 not found";
-        }
+    public String getResponseString(String query, String path) {
+        return genericRouter.getResponseString(query, path);
     }
 }
