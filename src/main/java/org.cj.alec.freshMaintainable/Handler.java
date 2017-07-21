@@ -4,7 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 class Handler {
-    private Router router = new Router();
+    private final Router router;
+
+    Handler(Router router) {
+        this.router = router;
+    }
 
     void handle(HttpServletRequest req, HttpServletResponse resp){
         UncheckedHttpServletResponse uncheckedResponse = new UncheckedHttpServletResponse(resp);

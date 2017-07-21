@@ -3,7 +3,6 @@ package org.cj.alec.freshMaintainable;
 import org.junit.Test;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -14,60 +13,21 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class HandlerTest {
-    @Test
-    public void sayHello(){
-        //given
-        Handler handler = new Handler();
-        HttpServletRequest request = new HttpServletRequestStub("target=world", "/hello");;
-        HttpServletResponseStub response = new HttpServletResponseStub();
-
-        //when
-        handler.handle(request, response);
-
-        //then
-        assertThat(response.textThatWasWritten(), is("Hello, world!"));
-    }
 
     @Test
-    public void sayHelloAlec(){
+    public void someQueryAndSomePathMakeAResponse(){
         //given
-        Handler handler = new Handler();
-        HttpServletRequestStub request = new HttpServletRequestStub("target=Alec", "/hello");
-        HttpServletResponseStub response = new HttpServletResponseStub();
+        RouterStub routerStub = new RouterStub();
+        String path = "some path";
+        String query = "target=someQuery";
+        HttpServletRequestStub requestStub = new HttpServletRequestStub(path, query);
+        HttpServletResponseStub responseStub = new HttpServletResponseStub();
+        Handler handler = new Handler(routerStub);
 
         //when
-        handler.handle(request, response);
+        handler.handle(requestStub, responseStub);
 
-        //then
-        assertThat(response.textThatWasWritten(), is("Hello, Alec!"));
-    }
-
-    @Test
-    public void giveLengthOfWorld(){
-        //given
-        Handler handler = new Handler();
-        HttpServletRequestStub request = new HttpServletRequestStub("target=world", "/length");
-        HttpServletResponseStub response = new HttpServletResponseStub();
-
-        //when
-        handler.handle(request, response);
-
-        //then
-        assertThat(response.textThatWasWritten(), is("Length: 5"));
-    }
-
-    @Test
-    public void otherPathsGiveNotFound(){
-        //given
-        Handler handler = new Handler();
-        HttpServletRequestStub request = new HttpServletRequestStub("target=world", "/foo");
-        HttpServletResponseStub response = new HttpServletResponseStub();
-
-        //when
-        handler.handle(request, response);
-
-        //then
-        assertThat(response.textThatWasWritten(), is("404 not found"));
+        assertThat(responseStub.textThatWasWritten(), is("some path, someQuery!"));
     }
 
     class HttpServletResponseStub extends HttpServletResponseNotImplemented {
@@ -103,7 +63,7 @@ public class HandlerTest {
         final String queryString;
         final String uri;
 
-        public HttpServletRequestStub(String queryString, String uri) {
+        HttpServletRequestStub(String uri, String queryString) {
             this.queryString = queryString;
             this.uri = uri;
         }
@@ -118,4 +78,12 @@ public class HandlerTest {
             return uri;
         }
     }
+
+    class RouterStub implements Router {
+        @Override
+        public String getResponseString(String target, String path) {
+            return String.format("%s, %s!",path, target);
+        }
+    }
+
 }
